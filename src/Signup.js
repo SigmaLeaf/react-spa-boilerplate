@@ -18,10 +18,10 @@ export default class Signup extends React.Component {
         };
     }
     validateForm() {
-        return this.state.name.length > 0 && 
-        this.state.email.length > 0 && 
-        this.state.password.length > 0 &&
-        this.state.password === this.state.confirmPassword;
+        return this.state.name.length > 0 &&
+            this.state.email.length > 0 &&
+            this.state.password.length > 0 &&
+            this.state.password === this.state.confirmPassword;
     }
     validateConfirmationForm() {
         return this.state.confirmationCode.length > 0;
@@ -45,7 +45,7 @@ export default class Signup extends React.Component {
             this.setState({
                 newUser
             });
-        } catch(e) {
+        } catch (e) {
             alert(e.message);
         }
         this.setState({ isLoading: false });
@@ -55,8 +55,8 @@ export default class Signup extends React.Component {
         this.setState({ isLoading: true });
         try {
             await Auth.confirmSignUp(this.state.email, this.state.confirmationCode);
-            await Auth.signIn(this.state.email, this.state.password);
-            this.props.setUserProfile(this.state.newUser);
+            let user = await Auth.signIn(this.state.email, this.state.password);
+            this.props.setUserProfile(user);
             this.props.userHasAuthenticated(true);
             this.props.history.push("/");
         } catch (e) {
@@ -66,31 +66,31 @@ export default class Signup extends React.Component {
     }
     renderConfirmationForm() {
         return (
-          <Form onSubmit={this.handleConfirmationSubmit}>
-            <Form.Group controlId="confirmationCode" bsSize="large">
-              <Form.Label>Confirmation Code</Form.Label>
-              <Form.Control
-                autoFocus
-                type="tel"
-                value={this.state.confirmationCode}
-                onChange={this.handleChange}
-              />
-              <span>Please check your email for the code.</span>
-            </Form.Group>
-            <LoaderButton
-              block
-              bsSize="large"
-              disabled={!this.validateConfirmationForm()}
-              type="submit"
-              isLoading={this.state.isLoading}
-              text="Verify"
-              loadingText="Verifying…"
-            />
-          </Form>
+            <Form onSubmit={this.handleConfirmationSubmit}>
+                <Form.Group controlId="confirmationCode" bsSize="large">
+                    <Form.Label>Confirmation Code</Form.Label>
+                    <Form.Control
+                        autoFocus
+                        type="tel"
+                        value={this.state.confirmationCode}
+                        onChange={this.handleChange}
+                    />
+                    <span>Please check your email for the code.</span>
+                </Form.Group>
+                <LoaderButton
+                    block
+                    bsSize="large"
+                    disabled={!this.validateConfirmationForm()}
+                    type="submit"
+                    isLoading={this.state.isLoading}
+                    text="Verify"
+                    loadingText="Verifying…"
+                />
+            </Form>
         );
     }
     renderForm() {
-        return(
+        return (
             <Form className="signup-form" onSubmit={this.handleSubmit}>
                 <Form.Group controlId="name">
                     <Form.Label>Name</Form.Label>
@@ -109,17 +109,17 @@ export default class Signup extends React.Component {
                     <Form.Control type="password" value={this.state.confirmPassword} onChange={this.handleChange} />
                 </Form.Group>
                 <LoaderButton
-                block
-                disabled={!this.validateForm()}
-                type="submit"
-                isLoading={this.state.isLoading}
-                text="Sign up"
-                loadingText="Signing up…" />
+                    block
+                    disabled={!this.validateForm()}
+                    type="submit"
+                    isLoading={this.state.isLoading}
+                    text="Sign up"
+                    loadingText="Signing up…" />
             </Form>
         )
     }
     render() {
-        return(
+        return (
             <Container fluid>
                 <Row className="justify-content-md-center">
                     <Col lg={4}>
